@@ -1,9 +1,8 @@
-# Project2-Kevin-Jean
-# Nuclear Survival RPG
+# Survival Game (Zork-like)
 
 ## Team Members
-- [Kevin Yavari Yoshioka]
-- [Jean Karlo Buitrago Orozco]
+- Kevin Yavari Yoshioka
+- Jean Karlo Buitrago Orozco
 
 ## Project Description
 This project is a **text-based RPG survival game** developed in Python.  
