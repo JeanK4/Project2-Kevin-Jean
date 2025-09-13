@@ -34,6 +34,8 @@ We designed the game this way for several reasons:
 5. **Modular and extensible codebase**  
    We implemented separate classes (`Game`, `Room`, `Player`, `Enemy`, `Object`, `Inventory`, `AudioManager`, etc.), which makes the project easier to maintain and expand. New items, enemies, or rooms can be added without rewriting the whole system.
 
----
+## Execution
+To run the game, run the file "main.py"
 
-This approach ensured that the game is **immersive, challenging, and extensible**, while also highlighting good programming practices such as object-oriented design, modularity, and event-driven logic.
+## Gameplay
+Link video: [https://www.youtube.com/watch?v=7p7zwg1t42E&t=1s]
