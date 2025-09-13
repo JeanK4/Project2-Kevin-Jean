@@ -8,7 +8,6 @@ from object import Object
 global_stairs = True
 
 class Game:
-    """Clase principal del juego con sistema completo de RPG"""
     
     def __init__(self, audio_manager):
         self.audio_manager = audio_manager
@@ -19,7 +18,6 @@ class Game:
         self.game_won = False
     
     def start_game(self):
-        """Inicia una nueva partida"""
         self.is_running = True
         self.turn_counter = 0
         self.game_won = False
@@ -30,14 +28,12 @@ class Game:
         self.game_loop()
     
     def _add_enemies_to_map(self):
-        """Agrega enemigos al mapa después de la inicialización"""
         enemy1 = Enemy("Guardia Infectado", 30, 8, 2, Object("Pistola", "Pistola del guardia", True))
         enemy2 = Enemy("Criatura Mutante", 50, 12, 3, Object("Llave especial", "Llave extraña", True))
         self.game_map.get_room("sala de seguridad").add_enemy(enemy1)
         self.game_map.get_room("reactor").add_enemy(enemy2)
     
     def _play_intro_sequence(self):
-        """Secuencia de introducción con audio"""
         os.system("cls")
         print("Hoy iba a ser como cualquier día en el trabajo, pero Rusia ha atacado nuevamente el país.")
         time.sleep(2)
@@ -58,7 +54,6 @@ class Game:
         input("\nPresiona Enter para continuar...")
     
     def game_loop(self):
-        """Bucle principal del juego"""
         while self.is_running and self.player.is_alive_check():
             self.turn_counter += 1
             self._show_current_status()
@@ -71,7 +66,6 @@ class Game:
         self._show_game_end()
     
     def _show_current_status(self):
-        """Muestra el estado actual del juego"""
         os.system("cls")
         print(self.player.get_quick_status())
         print()
@@ -106,8 +100,7 @@ class Game:
                 print("Ya has explorado este lugar.")
         print()
     
-    def _get_player_action(self) -> str:
-        """Obtiene la acción del jugador"""
+    def _get_player_action(self):
         print("¿Qué quieres hacer?")
         print("1. Explorar habitación actual")
         print("2. Moverse a otra habitación")
@@ -127,7 +120,6 @@ class Game:
                 return '6'
     
     def _process_action(self, action: str):
-        """Procesa la acción seleccionada por el jugador"""
         if action == '1':
             self._explore_current_room()
         elif action == '2':
@@ -142,7 +134,6 @@ class Game:
             self.is_running = False
     
     def _explore_current_room(self):
-        """Explora la habitación actual"""
         current_room = self.game_map.get_room(self.player.get_current_room())
         if not current_room:
             print("Error: Habitación no encontrada.")
@@ -164,7 +155,6 @@ class Game:
         input("\nPresiona Enter para continuar...")
     
     def _handle_room_objects(self, room):
-        """Maneja la interacción con objetos en la habitación"""
         objects = room.get_objects()
         if not objects:
             return
@@ -202,7 +192,6 @@ class Game:
             print("Selección inválida.")
     
     def _handle_combat(self, room):
-        """Maneja el combate con enemigos"""
         living_enemies = [e for e in room.get_enemies() if e.is_alive_check()]
         if not living_enemies:
             return
@@ -242,7 +231,6 @@ class Game:
             print("\n¡Has derrotado a todos los enemigos!")
     
     def _player_attack(self, enemies):
-        """Maneja el ataque del jugador"""
         if len(enemies) == 1:
             target = enemies[0]
         else:
@@ -272,7 +260,6 @@ class Game:
             print("Tu ataque falló.")
     
     def _enemies_turn(self, enemies):
-        """Turno de los enemigos"""
         for enemy in enemies:
             if enemy.is_alive_check():
                 action_result = enemy.act_turn(self.player)
@@ -282,7 +269,6 @@ class Game:
                 time.sleep(1)
     
     def _attempt_flee(self) -> bool:
-        """Intenta huir del combate"""
         print("Intentas huir...")
         import random
         if random.random() < 0.7:
@@ -295,7 +281,6 @@ class Game:
             return False
     
     def _move_to_room(self):
-        """Mueve al jugador a otra habitación"""
         current_room_name = self.player.get_current_room()
         connected_rooms = self.game_map.get_connected_rooms(current_room_name)
         
@@ -385,7 +370,6 @@ class Game:
             print("Selección inválida.")
     
     def _show_inventory(self):
-        """Muestra el inventario y permite gestionar objetos"""
         os.system("cls")
         print("Abriendo inventario...")
         self.audio_manager.play_audio("inventario.wav", volume=0.3)
@@ -406,7 +390,6 @@ class Game:
             self._drop_object()
 
     def _drop_object(self):
-        """Permite soltar un objeto del inventario en la habitación actual"""
         items = self.player.get_inventory().get_items()
         if not items:
             print("Tu inventario está vacío.")
@@ -430,7 +413,6 @@ class Game:
             print("Selección inválida.")
 
     def _use_object(self):
-        """Usa un objeto del inventario"""
         if self.player.get_inventory().is_empty():
             print("Tu inventario está vacío.")
             input("\nPresiona Enter para continuar...")
@@ -488,26 +470,22 @@ class Game:
 
     
     def _show_detailed_status(self):
-        """Muestra el estado detallado del jugador"""
         print(self.player.get_detailed_status())
         input("\nPresiona Enter para continuar...")
     
     def _rest_action(self):
-        """Acción de descansar"""
         success, message = self.player.rest()
         print(message)
         input("\nPresiona Enter para continuar...")
     
     def _process_turn_effects(self):
-        """Procesa efectos que ocurren cada turno"""
         if self.player.is_bleeding():
             bleeding_damage = self.player.apply_bleeding_damage()
             if bleeding_damage > 0:
                 print(f"\nPerdiste {bleeding_damage} puntos de salud por sangrado.")
                 time.sleep(1)
     
-    def _check_game_end(self) -> bool:
-        """Verifica las condiciones de fin de juego"""
+    def _check_game_end(self):
         if not self.player.is_alive_check():
             return True
         if self.player.get_current_room() == "reactor":
@@ -535,5 +513,5 @@ class Game:
         input("\nPresiona Enter para volver al menú...")
     
     def end_game(self):
-        """Termina el juego"""
+
         self.is_running = False
