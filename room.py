@@ -11,78 +11,66 @@ class Room:
     def __init__(self, name: str, description: str = ""):
         self.name = name
         self.description = description or f"Estás en {name}"
-        self.objects = []  # Lista de objetos Object
-        self.enemies = []  # Lista de enemigos
-        self.explored = False  # Si ya fue explorado
-        self.locked = False  # Si está bloqueado
-        self.key_required = None  # Llave necesaria para entrar
-        self.visited = False  # Si el jugador ha entrado alguna vez
+        self.objects: List = []
+        self.enemies: List = []
+        self.explored = False
+        self.locked = False
+        self.key_required = None
+        self.visited = False
     
-    # === GETTERS ===
-    def get_name(self) -> str:
+    def get_name(self):
         return self.name
     
-    def get_description(self) -> str:
+    def get_description(self):
         return self.description
     
-    def get_objects(self) -> List[Object]:
+    def get_objects(self):
         return self.objects.copy()
     
-    def get_enemies(self) -> List['Enemy']:
+    def get_enemies(self):
         return self.enemies.copy()
     
-    def is_visited(self) -> bool:
+    def is_visited(self):
         return self.visited
 
-    def is_explored(self) -> bool:
+    def is_explored(self):
         return self.explored
     
-    def is_locked(self) -> bool:
+    def is_locked(self):
         return self.locked
-    
-    # === SETTERS ===
+
     def set_description(self, description: str):
         self.description = description
     
     def set_locked(self, locked: bool, key_name: str = None):
         self.locked = locked
         self.key_required = key_name
-    
-    # === OBJECT MANAGEMENT ===
+
     def add_object(self, obj: Object):
-        """Agrega un objeto al cuarto"""
         if obj not in self.objects:
             self.objects.append(obj)
     
-    def remove_object(self, object_name: str) -> Optional[Object]:
-        """Remueve un objeto por nombre y lo devuelve"""
+    def remove_object(self, object_name: str):
         for i, obj in enumerate(self.objects):
             if obj.get_name().lower() == object_name.lower():
                 return self.objects.pop(i)
         return None
     
-    def has_object(self, object_name: str) -> bool:
-        """Verifica si el cuarto tiene un objeto específico"""
+    def has_object(self, object_name: str):
         return any(obj.get_name().lower() == object_name.lower() for obj in self.objects)
     
-    # === ENEMY MANAGEMENT ===
     def add_enemy(self, enemy: 'Enemy'):
-        """Agrega un enemigo al cuarto"""
         if enemy not in self.enemies:
             self.enemies.append(enemy)
     
     def remove_enemy(self, enemy: 'Enemy'):
-        """Remueve un enemigo del cuarto"""
         if enemy in self.enemies:
             self.enemies.remove(enemy)
     
-    def has_living_enemies(self) -> bool:
-        """Verifica si hay enemigos vivos en el cuarto"""
+    def has_living_enemies(self):
         return any(enemy.is_alive_check() for enemy in self.enemies)
-    
-    # === EXPLORATION ===
-    def explore(self) -> str:
-        """Explora el cuarto y devuelve la descripción detallada"""
+
+    def explore(self):
         self.explored = True
         result = f"{self.description}\n"
         
@@ -105,8 +93,7 @@ class Room:
     def set_visited(self):
         self.visited = True
     
-    def can_enter(self, player_inventory) -> tuple[bool, str]:
-        """Verifica si el jugador puede entrar al cuarto"""
+    def can_enter(self, player_inventory):
         if not self.locked:
             return True, ""
         
@@ -117,4 +104,5 @@ class Room:
     
     def __str__(self):
         return f"Room({self.name}, explored={self.explored}, objects={len(self.objects)}, enemies={len(self.enemies)})"
+
         return False
