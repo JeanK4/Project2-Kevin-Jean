@@ -38,4 +38,5 @@ We designed the game this way for several reasons:
 To run the game, run the file "main.py"
 
 ## Gameplay
-Link video: [https://www.youtube.com/watch?v=7p7zwg1t42E&t=1s]
+Example of one of the possible endings of the game:
+[Watch Video](https://www.youtube.com/watch?v=7p7zwg1t42E&t=1s)
