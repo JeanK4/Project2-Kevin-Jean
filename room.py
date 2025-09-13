@@ -6,7 +6,6 @@ if TYPE_CHECKING:
 
 
 class Room:
-    """Representa un cuarto del juego con objetos y posibles enemigos"""
     
     def __init__(self, name: str, description: str = ""):
         self.name = name
@@ -106,3 +105,4 @@ class Room:
         return f"Room({self.name}, explored={self.explored}, objects={len(self.objects)}, enemies={len(self.enemies)})"
 
         return False
+
