@@ -4,7 +4,6 @@ from menu import Menu
 
 
 class GameApplication:
-    """Clase principal que coordina toda la aplicación"""
     
     def __init__(self):
         self.audio_manager = AudioManager()
@@ -12,7 +11,6 @@ class GameApplication:
         self.menu = Menu(self.game)
     
     def run(self):
-        """Ejecuta la aplicación"""
         try:
             print("Bienvenido al juego!")
             self.menu.run()
@@ -22,5 +20,5 @@ class GameApplication:
             self.cleanup()
     
     def cleanup(self):
-        """Limpia los recursos antes de cerrar"""
+
         self.audio_manager.cleanup()
