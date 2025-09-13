@@ -4,7 +4,6 @@ from typing import Dict, List, Optional
 
 
 class GameMap:
-    """Representa el mapa del juego como un grafo de habitaciones conectadas"""
     
     def __init__(self):
         self.rooms = {}
@@ -12,8 +11,6 @@ class GameMap:
         self.initialize_map()
     
     def initialize_map(self):
-        """Inicializa todas las habitaciones y sus conexiones"""
-        # Crear habitaciones
         room_data = {
             "oficina": "Tu oficina personal. Huele a café y papeles.",
             "pasillo 1": "Un pasillo largo con luces parpadeantes.",
@@ -86,23 +83,17 @@ class GameMap:
         self.rooms["sala de seguridad"].set_locked(True, "Llave 1")
         self.rooms["sala de control"].set_locked(True, "Llave 2")
         self.rooms["reactor"].set_locked(True, "Llave 3")
-        
-    # === GETTERS ===
-    def get_room(self, room_name: str) -> Optional[Room]:
-        """Obtiene una habitación por nombre"""
+
+    def get_room(self, room_name: str):
         return self.rooms.get(room_name)
     
-    def get_connected_rooms(self, room_name: str) -> List[str]:
-        """Obtiene las habitaciones conectadas a una habitación"""
+    def get_connected_rooms(self, room_name: str):
         return self.connections.get(room_name, [])
     
-    def get_all_room_names(self) -> List[str]:
-        """Obtiene todos los nombres de habitaciones"""
+    def get_all_room_names(self):
         return list(self.rooms.keys())
-    
-    # === NAVIGATION ===
-    def can_move_to(self, from_room: str, to_room: str, player_inventory) -> tuple[bool, str]:
-        """Verifica si se puede mover de una habitación a otra"""
+
+    def can_move_to(self, from_room: str, to_room: str, player_inventory):
         if to_room not in self.get_connected_rooms(from_room):
             return False, f"No puedes ir a {to_room} desde {from_room}."
         
@@ -112,8 +103,7 @@ class GameMap:
         
         return False, "Habitación no encontrada."
     
-    def get_room_description(self, room_name: str, explored: bool = False) -> str:
-        """Obtiene la descripción de una habitación"""
+    def get_room_description(self, room_name: str, explored: bool = False):
         room = self.get_room(room_name)
         if not room:
             return "Habitación desconocida."
@@ -130,4 +120,5 @@ class GameMap:
             self.connections[to_room].remove(from_room)
     
     def __str__(self):
+
         return f"GameMap with {len(self.rooms)} rooms"
