@@ -1,0 +1,108 @@
+from object import Object
+from typing import List, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from enemy import Enemy
+
+
+class Room:
+    
+    def __init__(self, name: str, description: str = ""):
+        self.name = name
+        self.description = description or f"Estás en {name}"
+        self.objects: List = []
+        self.enemies: List = []
+        self.explored = False
+        self.locked = False
+        self.key_required = None
+        self.visited = False
+    
+    def get_name(self):
+        return self.name
+    
+    def get_description(self):
+        return self.description
+    
+    def get_objects(self):
+        return self.objects.copy()
+    
+    def get_enemies(self):
+        return self.enemies.copy()
+    
+    def is_visited(self):
+        return self.visited
+
+    def is_explored(self):
+        return self.explored
+    
+    def is_locked(self):
+        return self.locked
+
+    def set_description(self, description: str):
+        self.description = description
+    
+    def set_locked(self, locked: bool, key_name: str = None):
+        self.locked = locked
+        self.key_required = key_name
+
+    def add_object(self, obj: Object):
+        if obj not in self.objects:
+            self.objects.append(obj)
+    
+    def remove_object(self, object_name: str):
+        for i, obj in enumerate(self.objects):
+            if obj.get_name().lower() == object_name.lower():
+                return self.objects.pop(i)
+        return None
+    
+    def has_object(self, object_name: str):
+        return any(obj.get_name().lower() == object_name.lower() for obj in self.objects)
+    
+    def add_enemy(self, enemy: 'Enemy'):
+        if enemy not in self.enemies:
+            self.enemies.append(enemy)
+    
+    def remove_enemy(self, enemy: 'Enemy'):
+        if enemy in self.enemies:
+            self.enemies.remove(enemy)
+    
+    def has_living_enemies(self):
+        return any(enemy.is_alive_check() for enemy in self.enemies)
+
+    def explore(self):
+        self.explored = True
+        result = f"{self.description}\n"
+        
+        if self.objects:
+            result += "Objetos visibles:\n"
+            for obj in self.objects:
+                result += f"- {obj.get_name()}: {obj.get_description()}\n"
+        else:
+            result += "No hay objetos visibles.\n"
+        
+        if self.enemies:
+            living_enemies = [e for e in self.enemies if e.is_alive_check()]
+            if living_enemies:
+                result += "¡Enemigos presentes!\n"
+                for enemy in living_enemies:
+                    result += f"- {enemy.get_name()} (Vida: {enemy.get_health()})\n"
+        
+        return result
+
+    def set_visited(self):
+        self.visited = True
+    
+    def can_enter(self, player_inventory):
+        if not self.locked:
+            return True, ""
+        
+        if self.key_required and player_inventory.has_item(self.key_required):
+            return True, f"Usaste {self.key_required} para abrir la puerta."
+        
+        return False, f"La puerta está cerrada. Necesitas {self.key_required}."
+    
+    def __str__(self):
+        return f"Room({self.name}, explored={self.explored}, objects={len(self.objects)}, enemies={len(self.enemies)})"
+
+        return False
+
