@@ -1,14 +1,12 @@
 import os
 
 class Menu:
-    """Clase para manejar el menú del juego"""
     
     def __init__(self, game):
         self.game = game
         self.running = True
     
     def show_menu(self):
-        """Muestra las opciones del menú"""
         print("\n" + "="*25)
         print("      MENÚ PRINCIPAL")
         print("="*25)
@@ -17,7 +15,6 @@ class Menu:
         print("="*25)
     
     def get_user_choice(self):
-        """Obtiene la opción seleccionada por el usuario"""
         while True:
             try:
                 choice = input("Seleccione una opción: ").strip()
@@ -30,7 +27,6 @@ class Menu:
                 return "2"
     
     def run(self):
-        """Ejecuta el menú principal"""
         while self.running:
             self.show_menu()
             choice = self.get_user_choice()
@@ -41,3 +37,4 @@ class Menu:
                 os.system("cls")
                 print("¡Gracias por jugar!")
                 self.running = False
+
